@@ -7,46 +7,11 @@
 </html>
 
 <?php
-    /*
-        Cerca un utente all'interno di un array.
-        Restituisce true se è presente 
-    */
-    function searchUser($data, $email, $name, $surname) {
-        foreach($data['userlist'] as $mydata)
-        {
-            if( $mydata['mail'] == $email || ($mydata['nome'] == $name && $mydata['cognome'] == $surname) )
-                return false;
-        } 
-        return true;
-    }
-    /*
-        Controlla se le credenziali dell'utente sono corrette
-        Restituisce:
-            0 se l'utente non esiste
-            1 se i campi sono corretti
-            2 se la password è sbagliata
-    */
-    function checkUser($data,$email,$pass) {
-        foreach($data['userlist'] as $mydata)
-        {
-            if($mydata['mail'] == $email )
-                if($mydata['pass'] == $pass)
-                    return 1;
-                else
-                    return 2;
-        } 
-        return 0;
-    }
 
     session_start();
 
     //connessione al database
     $CNT = mysqli_connect("localhost","root", "","generico");
-
-
-    $json = file_get_contents('userlist.json');
-    //converte il file json in un array
-    $data = json_decode($json,true);
 
     //creo la pagina
     $var = "<div class='container'> <div class='wrapper'>";
@@ -115,16 +80,6 @@
             
             //sposto la foto profilo nella cartella res
             move_uploaded_file($PathTmpFile,"./res/".$NomeFile);
-            
-            //creo un array di supporto dove inserisco i dati dell'utente
-            $newar = array(
-                    'mail' =>$_POST['mail'] ,
-                    'pass' =>$_POST['pass'] ,
-                    'nome' =>$_POST['nome'] ,
-                    'cognome' =>$_POST['cognome'],
-                    'foto' => "./res/".$NomeFile  //percoso immagine
-
-            );
 
             //inserisco i dati nel database
             $sql = "INSERT INTO users(name,surname,password,photoSrc,email)
