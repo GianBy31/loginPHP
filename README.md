@@ -1,11 +1,15 @@
 # pagina login in PHP con database
+## Attenzione:
+Per connetersi al proprio database modificare i parametri d'accesso (index.php: riga 14).  
+Inoltre la tabella del database è già creata e non viene creata via script nel codice.  
+
 ## Esercitazione: 
-creazione di una pagina login utilizzando un semplice DATABASE sostituendolo al file JSON
-Il sito deve permettere ad un utente di registrarsi (mail, password e foto Profilo) e di accedere, il tutto nella stessa pagina.
-Se l'utente è già registrato o durante l'accesso vengono inseriti dati sbagliati l'utente deve venirni a conoscienza attraverso un messaggio di errore.
+creazione di una pagina login utilizzando un semplice DATABASE in sostituzione al file JSON (esercitazione precedente)  
+Il sito deve permettere ad un utente di registrarsi (mail, password e foto Profilo) e di accedere, il tutto nella stessa pagina.  
+Se l'utente è già registrato o durante l'accesso vengono inseriti dati sbagliati l'utente deve venirni a conoscienza attraverso un messaggio di errore.  
 
 # Risultato ottenuto
-## registrazione e login
+## registrazione ed accesso
 ![image](https://user-images.githubusercontent.com/83471920/204997149-15bde2f1-e8ef-469c-a506-65d1688035f1.png)
 ![image](https://user-images.githubusercontent.com/83471920/204997274-d5223f05-28b9-4161-b205-7e1ad24c71ff.png)
 
