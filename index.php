@@ -40,6 +40,7 @@
 
     session_start();
 
+    //connessione al database
     $CNT = mysqli_connect("localhost","root", "","generico");
 
 
@@ -104,8 +105,10 @@
     //l'utente ha premuto il pulsante di registrazione
     if(isset($_REQUEST['reg'])){   
         //verifico che il nome utente non sia già presente, altrimenti stampo errore
-        if(searchUser($data, $_POST['mail'],$_POST['nome'],$_POST['cognome']))
+        $sql = "SELECT * FROM users WHERE email = '{$_POST['mail']}'";
+        if(mysqli_num_rows(mysqli_query($CNT, $sql)) == 0)
         {
+            echo mysqli_num_rows(mysqli_query($CNT, $sql)) ;
             //salvo gli attributi della foto dell'utente in due variabili temporanee 
             $NomeFile=$_FILES['FileInCarico']['name']; //Nome
             $PathTmpFile=$_FILES['FileInCarico']['tmp_name']; //Percorso (che sarà posteggiato in un percorso temporaneo)
@@ -135,29 +138,25 @@
 
             mysqli_close($CNT);
 
-            //aggiungo all'array contentente tutti gli utenti l'utente appena creato e lo carico nel file json
-            array_push($data['userlist'], $newar);
-            $json = json_encode($data,JSON_PRETTY_PRINT);
-            file_put_contents('userlist.json', $json);
-
-            $_SESSION['nome'] = $_POST['mail'];
+            $_SESSION['mail'] = $_POST['mail'];
 
             //carico la pagina dell'accesso per mostrare i dati dell'utente
-            //header("Location: access.php");
+            header("Location: access.php");
         }else 
             echo "<center> <p class='bar err'>Utente già registrato</p> <center>";
     }
     
     //se l'utente fa l'accesso
     if(isset($_REQUEST['enter'])){  
-        //controllo che l'utente non sia già registrato
-        $check = checkUser($data, $_POST['mail'], $_POST['pass']);
+        //controllo che le credenziali siano corrette
+        $sql = "SELECT email, password FROM users WHERE email = '{$_POST['mail']}' && password = '{$_POST['pass']}'";
+        $check = mysqli_num_rows(mysqli_query($CNT, $sql));
         if($check == 1)
         {
-            $_SESSION['nome'] = $_POST['mail'];
+            $_SESSION['mail'] = $_POST['mail'];
             header("Location: access.php");
-        }else if($check == 2)
-            echo "<center> <p class='bar err'>Password non corretta</p> </center>";
+        }else if(mysqli_num_rows(mysqli_query($CNT, "SELECT email FROM users WHERE email = '{$_POST['mail']}'")) == 1)
+            echo "<center> <p class='bar err'>email o password non corretti</p> </center>";
         else 
             echo "<center> <p class='bar err'>Utente non registrato</p> </center>";
     }
