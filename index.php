@@ -12,6 +12,8 @@
 
     //connessione al database
     $CNT = mysqli_connect("localhost","root", "","generico");
+
+    //creazione tabella users
     mysqli_query($CNT,"create table if not exists users(
                                 email    varchar(50)  not null primary key,
                                 name     varchar(50)  not null,
