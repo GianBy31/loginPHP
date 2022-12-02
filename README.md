@@ -1,7 +1,6 @@
 # pagina login in PHP con database
 ## Attenzione:
-Per connetersi al proprio database modificare i parametri d'accesso (index.php: riga 14).  
-Inoltre la tabella users del database non viene creata via query nel codice.  
+Per connetersi al proprio database modificare i parametri d'accesso (index.php: riga 14). 
 
 ## Esercitazione: 
 creazione di una pagina login utilizzando un semplice DATABASE in sostituzione al file JSON (esercitazione precedente)  
