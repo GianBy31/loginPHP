@@ -12,7 +12,13 @@
 
     //connessione al database
     $CNT = mysqli_connect("localhost","root", "","generico");
-
+    mysqli_query($CNT,"create table if not exists users(
+                                email    varchar(50)  not null primary key,
+                                name     varchar(50)  not null,
+                                surname  varchar(50)  not null,
+                                password varchar(255) not null,
+                                photoSrc varchar(100) not null
+                            );");
     //creo la pagina
     $var = "<div class='container'> <div class='wrapper'>";
     //se l'utente è nella pagine login stampo il form del login
