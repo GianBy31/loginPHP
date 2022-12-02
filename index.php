@@ -82,8 +82,9 @@
             move_uploaded_file($PathTmpFile,"./res/".$NomeFile);
 
             //inserisco i dati nel database
+            $psw = password_hash($_POST['pass'],PASSWORD_DEFAULT);
             $sql = "INSERT INTO users(name,surname,password,photoSrc,email)
-                    VALUES ('{$_POST['nome']}','{$_POST['cognome']}','{$_POST['pass']}', './res/$NomeFile','{$_POST['mail']}')";
+                    VALUES ('{$_POST['nome']}','{$_POST['cognome']}','{$psw}', './res/$NomeFile','{$_POST['mail']}')";
 
             if (mysqli_query($CNT, $sql)) {
                 echo "New record created successfully";
@@ -104,15 +105,17 @@
     //se l'utente fa l'accesso
     if(isset($_REQUEST['enter'])){  
         //controllo che le credenziali siano corrette
-        $sql = "SELECT email, password FROM users WHERE email = '{$_POST['mail']}' && password = '{$_POST['pass']}'";
+        $sql = "SELECT email, password FROM users WHERE email = '{$_POST['mail']}'";
         $check = mysqli_num_rows(mysqli_query($CNT, $sql));
         if($check == 1)
         {
             $_SESSION['mail'] = $_POST['mail'];
-            header("Location: access.php");
-        }else if(mysqli_num_rows(mysqli_query($CNT, "SELECT email FROM users WHERE email = '{$_POST['mail']}'")) == 1)
-            echo "<center> <p class='bar err'>email o password non corretti</p> </center>";
-        else 
+            $row = mysqli_fetch_assoc(mysqli_query($CNT, $sql));
+            if(password_verify($_POST['pass'], $row['password']))
+                header("Location: access.php");
+            else
+                echo "<center> <p class='bar err'>Password errata</p> </center>";
+        }
             echo "<center> <p class='bar err'>Utente non registrato</p> </center>";
     }
 ?>
