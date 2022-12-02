@@ -11,10 +11,22 @@
     session_start();
 
     //connessione al database
-    $CNT = mysqli_connect("localhost","root", "","generico");
+    $conn = mysqli_connect("localhost","root", "");
+
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    // Crea il database
+    $sql = "CREATE DATABASE IF NOT EXISTS generico";
+    if (mysqli_query($conn, $sql) == FALSE)
+        echo "Error creating database: " . $conn->error;
+
+    $conn = new mysqli("localhost","root", "","generico");
 
     //creazione tabella users
-    mysqli_query($CNT,"create table if not exists users(
+    mysqli_query($conn,"create table if not exists users(
                                 email    varchar(50)  not null primary key,
                                 name     varchar(50)  not null,
                                 surname  varchar(50)  not null,
@@ -79,9 +91,9 @@
     if(isset($_REQUEST['reg'])){   
         //verifico che il nome utente non sia già presente, altrimenti stampo errore
         $sql = "SELECT * FROM users WHERE email = '{$_POST['mail']}'";
-        if(mysqli_num_rows(mysqli_query($CNT, $sql)) == 0)
+        if(mysqli_num_rows(mysqli_query($conn, $sql)) == 0)
         {
-            echo mysqli_num_rows(mysqli_query($CNT, $sql)) ;
+            echo mysqli_num_rows(mysqli_query($conn, $sql)) ;
             //salvo gli attributi della foto dell'utente in due variabili temporanee 
             $NomeFile=$_FILES['FileInCarico']['name']; //Nome
             $PathTmpFile=$_FILES['FileInCarico']['tmp_name']; //Percorso (che sarà posteggiato in un percorso temporaneo)
@@ -94,13 +106,13 @@
             $sql = "INSERT INTO users(name,surname,password,photoSrc,email)
                     VALUES ('{$_POST['nome']}','{$_POST['cognome']}','{$psw}', './res/$NomeFile','{$_POST['mail']}')";
 
-            if (mysqli_query($CNT, $sql)) {
+            if (mysqli_query($conn, $sql)) {
                 echo "New record created successfully";
             } else {
-                echo "Error: " . $sql . "<br>" . mysqli_error($CNT);
+                echo "Error: " . $sql . "<br>" . mysqli_error($conn);
             }
 
-            mysqli_close($CNT);
+            mysqli_close($conn);
 
             $_SESSION['mail'] = $_POST['mail'];
 
@@ -114,11 +126,11 @@
     if(isset($_REQUEST['enter'])){  
         //controllo che le credenziali siano corrette
         $sql = "SELECT email, password FROM users WHERE email = '{$_POST['mail']}'";
-        $check = mysqli_num_rows(mysqli_query($CNT, $sql));
+        $check = mysqli_num_rows(mysqli_query($conn, $sql));
         if($check == 1)
         {
             $_SESSION['mail'] = $_POST['mail'];
-            $row = mysqli_fetch_assoc(mysqli_query($CNT, $sql));
+            $row = mysqli_fetch_assoc(mysqli_query($conn, $sql));
             if(password_verify($_POST['pass'], $row['password']))
                 header("Location: access.php");
             else
