@@ -11,8 +11,7 @@
 <?php
 
     session_start();
-
-    $conn = mysqli_connect("localhost", "root", "", "generico");
+    $conn = mysqli_connect($_SESSION['servername'], $_SESSION['username'], $_SESSION['password'], "generico");
     $sql = "SELECT name, photoSrc FROM `users` WHERE email = '{$_SESSION['mail']}'";
 
     $row = mysqli_fetch_assoc(mysqli_query($conn, $sql));
