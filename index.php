@@ -10,8 +10,17 @@
 
     session_start();
 
+    //db access variables
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+
+    $_SESSION['servername'] = $servername;
+    $_SESSION['username'] = $username;
+    $_SESSION['password'] = $password;
+
     //connessione al database
-    $conn = mysqli_connect("localhost","root", "");
+    $conn = mysqli_connect($servername,$username, $password);
 
     // Check connection
     if ($conn->connect_error) {
@@ -23,7 +32,7 @@
     if (mysqli_query($conn, $sql) == FALSE)
         echo "Error creating database: " . $conn->error;
 
-    $conn = new mysqli("localhost","root", "","generico");
+    $conn = mysqli_connect($servername,$username, $password,"generico");
 
     //creazione tabella users
     mysqli_query($conn,"create table if not exists users(
