@@ -15,6 +15,3 @@ Se l'utente è già registrato o durante l'accesso vengono inseriti dati sbaglia
 ## messaggi d'erore
 ![image](https://user-images.githubusercontent.com/83471920/204997562-9622aa48-ca90-45ca-8743-cd77edd14370.png)
 ![image](https://user-images.githubusercontent.com/83471920/204997644-7ed85c23-c350-4564-a04a-ecb556b89b11.png)
-
-## pagina d'accesso
-![image](https://user-images.githubusercontent.com/83471920/204997915-ac46cda1-a306-4989-b847-896e1aa129fe.png)
